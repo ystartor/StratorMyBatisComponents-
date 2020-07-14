@@ -147,7 +147,7 @@ public class ClassLoaderWrapper {
                 // 直接获取url
                 url = cl.getResource(resource);
                 //
-                if (null != url){
+                if (null == url){
                     //有的classloader需要“/”
                     url = cl.getResource("/" + resource);
                 }

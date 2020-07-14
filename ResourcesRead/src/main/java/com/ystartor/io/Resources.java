@@ -60,7 +60,7 @@ public class Resources {
             // 抛出异常
             throw new IOException("找不到这个resource文件" + resource);
         }
-        return null;
+        return url;
     }
 
     /**

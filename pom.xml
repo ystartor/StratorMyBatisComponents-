@@ -10,6 +10,7 @@
     <modules>
         <module>ResourcesRead</module>
         <module>CustomException</module>
+        <module>TestStratorMyBatis</module>
     </modules>
 
     <packaging>pom</packaging>
