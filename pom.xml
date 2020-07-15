@@ -11,6 +11,11 @@
         <module>ResourcesRead</module>
         <module>CustomException</module>
         <module>TestStratorMyBatis</module>
+        <module>SessionProduce</module>
+        <module>Cursor</module>
+        <module>Executor</module>
+        <module>Mapping</module>
+        <module>Type</module>
     </modules>
 
     <packaging>pom</packaging>
