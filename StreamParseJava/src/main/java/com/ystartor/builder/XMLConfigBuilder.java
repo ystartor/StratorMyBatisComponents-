@@ -1,6 +1,7 @@
 package com.ystartor.builder;
 
-import com.ystartor.session.parsexml.Configuration;
+
+import com.ystartor.session.xmlbean.Configuration;
 
 /**
  *

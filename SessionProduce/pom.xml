@@ -11,5 +11,12 @@
 
     <artifactId>SessionProduce</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.ystartor</groupId>
+            <artifactId>StreamParseJava</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

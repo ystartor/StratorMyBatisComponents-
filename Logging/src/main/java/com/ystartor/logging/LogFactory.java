@@ -2,9 +2,12 @@ package com.ystartor.logging;
 
 import com.ystartor.logging.commons.JakartaCommonsLoggingImpl;
 import com.ystartor.logging.exception.LogException;
+import com.ystartor.logging.jdk14.Jdk14LoggingImpl;
 import com.ystartor.logging.log4j.Log4jImpl;
 import com.ystartor.logging.log4j2.Log4j2Impl;
+import com.ystartor.logging.nologging.NoLoggingImpl;
 import com.ystartor.logging.slf4j.Slf4jImpl;
+import com.ystartor.logging.stdout.StdOutImpl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -72,9 +75,17 @@ public final class LogFactory {
         setImplemention(Log4j2Impl.class);
     }
 
+    public static synchronized void useJdkLogging(){
+        setImplemention(Jdk14LoggingImpl.class);
+    }
 
+    public static synchronized void useStdOutLogging(){
+        setImplemention(StdOutImpl.class);
+    }
 
-
+    public static synchronized void useNoLogging(){
+        setImplemention(NoLoggingImpl.class);
+    }
 
     private static void setImplemention(Class<? extends Log> implClass){
         try {
