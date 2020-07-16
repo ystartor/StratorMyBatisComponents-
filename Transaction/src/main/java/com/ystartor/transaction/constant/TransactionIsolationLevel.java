@@ -1,9 +1,11 @@
-package com.ystartor.session.constant;
+package com.ystartor.transaction.constant;
 
 import java.sql.Connection;
 
+/**
+ * 事务隔离级别
+ */
 public enum  TransactionIsolationLevel {
-
 
     NONE(Connection.TRANSACTION_NONE),
     READ_COMMITIED(Connection.TRANSACTION_READ_COMMITTED),
@@ -18,6 +20,5 @@ public enum  TransactionIsolationLevel {
     public int getLevel(){
         return level;
     }
-
 
 }

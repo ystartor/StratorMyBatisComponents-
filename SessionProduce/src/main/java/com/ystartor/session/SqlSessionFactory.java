@@ -1,8 +1,8 @@
 package com.ystartor.session;
 
-import com.ystartor.session.constant.TransactionIsolationLevel;
 import com.ystartor.session.executor.ExecutorType;
 import com.ystartor.session.xmlbean.Configuration;
+import com.ystartor.transaction.constant.TransactionIsolationLevel;
 
 import java.sql.Connection;
 
