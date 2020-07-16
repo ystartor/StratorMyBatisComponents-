@@ -16,6 +16,8 @@
         <module>Executor</module>
         <module>Mapping</module>
         <module>Type</module>
+        <module>StreamParseJava</module>
+        <module>Logging</module>
     </modules>
 
     <packaging>pom</packaging>
