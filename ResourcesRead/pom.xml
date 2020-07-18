@@ -11,6 +11,13 @@
 
     <artifactId>ResourcesRead</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.ystartor</groupId>
+            <artifactId>Logging</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

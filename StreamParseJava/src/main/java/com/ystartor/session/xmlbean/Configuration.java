@@ -1,5 +1,6 @@
 package com.ystartor.session.xmlbean;
 
+import com.ystartor.io.VFS;
 import com.ystartor.logging.Log;
 import com.ystartor.session.xmlbean.config.Environment;
 
@@ -37,7 +38,7 @@ public class Configuration {
 
     protected String logPrefix;
     protected Class<? extends Log> logImpl;
-//    protected Class<? extends VFS>
+    protected Class<? extends VFS> vfsImpl;
 
 
 }

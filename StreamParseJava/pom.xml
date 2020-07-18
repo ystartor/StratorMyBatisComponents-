@@ -22,6 +22,11 @@
             <artifactId>Logging</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.ystartor</groupId>
+            <artifactId>ResourcesRead</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
