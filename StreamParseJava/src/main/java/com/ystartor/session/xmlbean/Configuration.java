@@ -1,8 +1,19 @@
 package com.ystartor.session.xmlbean;
 
+import com.ystartor.executor.constant.ExecutorType;
 import com.ystartor.io.VFS;
 import com.ystartor.logging.Log;
+import com.ystartor.mapping.constant.AutoMappingBehavior;
+import com.ystartor.mapping.constant.AutoMappingUnknownColumnBehavior;
+import com.ystartor.mapping.constant.ResultSetType;
+import com.ystartor.session.constant.LocalCacheScope;
 import com.ystartor.session.xmlbean.config.Environment;
+import com.ystartor.type.JdbcType;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  *
@@ -39,6 +50,23 @@ public class Configuration {
     protected String logPrefix;
     protected Class<? extends Log> logImpl;
     protected Class<? extends VFS> vfsImpl;
+    protected Class<?> defaultSqlProviderType;
+    protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
+    protected JdbcType jdbcTypeForNull = JdbcType.OTHER;
+    protected Set<String> lazyLoadTriggerMethods = new HashSet<>(Arrays.asList("equals", "clone", "hashCode", "toString"));
+    protected Integer defaultStatementTimeout;
+    protected Integer defaultFetchSize;
+    protected ResultSetType defaultResultSetType;
+
+    protected ExecutorType defaultExecutorType = ExecutorType.SIMPLE;
+    protected AutoMappingBehavior autoMappingBehavior = AutoMappingBehavior.PARTIAL;
+    protected AutoMappingUnknownColumnBehavior autoMappingUnknownColumnBehavior = AutoMappingUnknownColumnBehavior.NONE;
+
+
+    protected Properties variables = new Properties();
+    //TODO root
+
+
 
 
 }

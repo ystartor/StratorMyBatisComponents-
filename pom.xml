@@ -19,6 +19,7 @@
         <module>StreamParseJava</module>
         <module>Logging</module>
         <module>Transaction</module>
+        <module>Reflection</module>
     </modules>
 
     <packaging>pom</packaging>
