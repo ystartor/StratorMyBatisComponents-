@@ -14,6 +14,10 @@ public class TypeParameterResolver {
        return resolveType(fieldType, srcType, declaringClass);
    }
 
+    private TypeParameterResolver() {
+        super();
+    }
+
     /**
      *
      * @param type 字段类型
@@ -25,9 +29,45 @@ public class TypeParameterResolver {
        if (type instanceof TypeVariable){
            return resolveTypeVar((TypeVariable<?>)type, srcType, declaringClass);
        } else if (type instanceof ParameterizedType){
-           return resolve
+           return resolveParameterizedType((ParameterizedType) type, srcType, declaringClass);
+       } else if (type instanceof GenericArrayType) {
+           return resolveGenericArrayType((GenericArrayType) type, srcType, declaringClass);
+       } else {
+           return type;
        }
    }
+
+    public static Type[] resolveParamTypes(Method method, Type srcType) {
+        Type[] paramTypes = method.getGenericParameterTypes();
+        Class<?> declaringClass = method.getDeclaringClass();
+        Type[] result = new Type[paramTypes.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            result[i] = resolveType(paramTypes[i], srcType, declaringClass);
+        }
+        return result;
+    }
+    public static Type resolveReturnType(Method method, Type srcType) {
+        Type returnType = method.getGenericReturnType();
+        Class<?> declaringClass = method.getDeclaringClass();
+        return resolveType(returnType, srcType, declaringClass);
+    }
+
+    private static Type resolveGenericArrayType(GenericArrayType genericArrayType, Type srcType, Class<?> declaringClass) {
+        Type componentType = genericArrayType.getGenericComponentType();
+        Type resolvedComponentType = null;
+        if (componentType instanceof TypeVariable) {
+            resolvedComponentType = resolveTypeVar((TypeVariable<?>) componentType, srcType, declaringClass);
+        } else if (componentType instanceof GenericArrayType) {
+            resolvedComponentType = resolveGenericArrayType((GenericArrayType) componentType, srcType, declaringClass);
+        } else if (componentType instanceof ParameterizedType) {
+            resolvedComponentType = resolveParameterizedType((ParameterizedType) componentType, srcType, declaringClass);
+        }
+        if (resolvedComponentType instanceof Class) {
+            return Array.newInstance((Class<?>) resolvedComponentType, 0).getClass();
+        } else {
+            return new GenericArrayTypeImpl(resolvedComponentType);
+        }
+    }
 
 
    private static ParameterizedType resolveParameterizedType(ParameterizedType parameterizedType, Type srcType, Class<?> declaringClass){
@@ -40,10 +80,12 @@ public class TypeParameterResolver {
            } else if (typeArgs[i] instanceof ParameterizedType) {
                args[i] = resolveParameterizedType((ParameterizedType) typeArgs[i], srcType, declaringClass);
            } else if (typeArgs[i] instanceof ParameterizedType) {
-
+               args[i] = resolveWildcardType((WildcardType) typeArgs[i], srcType, declaringClass);
+           } else {
+               args[i] = typeArgs[i];
            }
        }
-
+       return new ParameterizedTypeImpl(rawType, null, args);
    }
 
 
@@ -55,13 +97,25 @@ public class TypeParameterResolver {
      * @return
      */
    private  static Type resolveWildcardType(WildcardType wildcardType, Type srcType, Class<?> declaringClass){
-       
+       Type[] lowerBounds = resolveWildcardTypeBounds(wildcardType.getLowerBounds(), srcType, declaringClass);
+       Type[] upperBounds = resolveWildcardTypeBounds(wildcardType.getUpperBounds(), srcType, declaringClass);
+       return new WildcardTypeImpl(lowerBounds, upperBounds);
    }
 
    private static Type[] resolveWildcardTypeBounds(Type[] bounds, Type srcType, Class<?> declaringClass){
        Type[] result = new Type[bounds.length];
-
-
+       for (int i = 0; i < bounds.length; i++) {
+           if (bounds[i] instanceof TypeVariable) {
+               result[i] = resolveTypeVar((TypeVariable<?>) bounds[i], srcType, declaringClass);
+           } else if (bounds[i] instanceof ParameterizedType) {
+               result[i] = resolveParameterizedType((ParameterizedType) bounds[i], srcType, declaringClass);
+           } else if (bounds[i] instanceof WildcardType) {
+               result[i] = resolveWildcardType((WildcardType) bounds[i], srcType, declaringClass);
+           } else {
+               result[i] = bounds[i];
+           }
+       }
+       return result;
    }
 
     /**
@@ -161,6 +215,40 @@ public class TypeParameterResolver {
         return noChange ? parentType : new ParameterizedTypeImpl((Class<?>) parentType.getRawType(), null, newParentArgs);
     }
 
+    static class WildcardTypeImpl implements WildcardType {
+        private Type[] lowerBounds;
+
+        private Type[] upperBounds;
+
+        WildcardTypeImpl(Type[] lowerBounds, Type[] upperBounds) {
+            super();
+            this.lowerBounds = lowerBounds;
+            this.upperBounds = upperBounds;
+        }
+
+        @Override
+        public Type[] getLowerBounds() {
+            return lowerBounds;
+        }
+
+        @Override
+        public Type[] getUpperBounds() {
+            return upperBounds;
+        }
+    }
+    static class GenericArrayTypeImpl implements GenericArrayType {
+        private Type genericComponentType;
+
+        GenericArrayTypeImpl(Type genericComponentType) {
+            super();
+            this.genericComponentType = genericComponentType;
+        }
+
+        @Override
+        public Type getGenericComponentType() {
+            return genericComponentType;
+        }
+    }
     static class ParameterizedTypeImpl implements ParameterizedType{
         private Class<?> rawType;
         private Type ownerType;

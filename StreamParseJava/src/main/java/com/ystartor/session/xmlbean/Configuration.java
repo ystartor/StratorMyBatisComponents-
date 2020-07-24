@@ -6,6 +6,10 @@ import com.ystartor.logging.Log;
 import com.ystartor.mapping.constant.AutoMappingBehavior;
 import com.ystartor.mapping.constant.AutoMappingUnknownColumnBehavior;
 import com.ystartor.mapping.constant.ResultSetType;
+import com.ystartor.reflection.DefaultReflectorFactory;
+import com.ystartor.reflection.ReflectorFactory;
+import com.ystartor.reflection.factory.DefaultObjectFactory;
+import com.ystartor.reflection.factory.ObjectFactory;
 import com.ystartor.session.constant.LocalCacheScope;
 import com.ystartor.session.xmlbean.config.Environment;
 import com.ystartor.type.JdbcType;
@@ -64,7 +68,10 @@ public class Configuration {
 
 
     protected Properties variables = new Properties();
-    //TODO root
+    protected ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
+    protected ObjectFactory objectFactory = new DefaultObjectFactory();
+
+
 
 
 
